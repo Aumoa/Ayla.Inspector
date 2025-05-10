@@ -1,0 +1,16 @@
+{
+    "name": "Ayla.Inspector",
+    "rootNamespace": "Ayla.Inspector",
+    "references": [
+        "Ayla.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
