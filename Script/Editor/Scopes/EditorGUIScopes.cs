@@ -36,6 +36,27 @@ namespace Ayla.Inspector
             outputRect = EditorGUILayout.BeginHorizontal(options);
             return new HorizontalBuilder();
         }
+
+        public readonly struct IndentBuilder : IDisposable
+        {
+            public readonly int m_Previous;
+
+            public IndentBuilder(int newIndentLevel)
+            {
+                m_Previous = EditorGUI.indentLevel;
+                EditorGUI.indentLevel = newIndentLevel;
+            }
+
+            public void Dispose()
+            {
+                EditorGUI.indentLevel = m_Previous;
+            }
+        }
+
+        public static IndentBuilder Indent(int plusIndentLevel = 1)
+        {
+            return new IndentBuilder(EditorGUI.indentLevel + plusIndentLevel);
+        }
     }
 }
 #endif
