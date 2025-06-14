@@ -118,7 +118,7 @@ namespace Ayla.Inspector
 
             m_Owner = InternalConstructorArgs.s_Owner!;
             m_SourceType = InternalConstructorArgs.s_SourceType!;
-            m_Title = m_SourceType.GetCustomAttribute<NameAttribute>()?.Name ?? GetType().Name;
+            m_Title = m_SourceType.GetCustomAttribute<NameAttribute>()?.Name ?? ObjectNames.NicifyVariableName(GetType().Name);
         }
 
         internal SuppressCallDelayUpdateDisposable SuppressCallDelayUpdate()
