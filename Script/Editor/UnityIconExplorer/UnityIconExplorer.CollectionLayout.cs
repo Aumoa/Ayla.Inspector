@@ -39,7 +39,7 @@ namespace Ayla.Inspector
 
                 using (GUIScope.Disabled(context.VerticalScroll < drawingArgs.DrawingRect.height))
                 {
-                    context.VerticalScroll = GUI.VerticalScrollbar(drawingArgs.DrawingRect.FillRight(ScrollWidth), Mathf.Max(context.VerticalScroll, drawingArgs.DrawingRect.height), drawingArgs.DrawingRect.height, 0, totalHeight);
+                    context.VerticalScroll = GUI.VerticalScrollbar(drawingArgs.DrawingRect.FillRight(ScrollWidth), context.VerticalScroll, drawingArgs.DrawingRect.height, 0, totalHeight);
                 }
                 drawingArgs = drawingArgs.MarginRight(ScrollWidth);
 
