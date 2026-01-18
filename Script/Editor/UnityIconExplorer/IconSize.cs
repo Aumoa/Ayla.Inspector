@@ -1,5 +1,4 @@
-#if UNITY_EDITOR
-namespace Ayla.Inspector
+namespace Ayla
 {
     internal enum IconSize
     {
@@ -9,4 +8,3 @@ namespace Ayla.Inspector
         _64 = 64
     }
 }
-#endif

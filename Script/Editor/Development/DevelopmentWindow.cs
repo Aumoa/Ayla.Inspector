@@ -1,16 +1,14 @@
-#if UNITY_EDITOR
 #nullable enable
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Ayla.Core;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public class DevelopmentWindow : EditorWindow, ISerializationCallbackReceiver
     {
@@ -348,4 +346,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

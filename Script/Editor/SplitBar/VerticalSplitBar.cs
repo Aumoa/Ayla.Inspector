@@ -1,10 +1,8 @@
-#if UNITY_EDITOR
 #nullable enable
-using Ayla.Core;
 using UnityEditor;
 using UnityEngine;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public static class VerticalSplitBar
     {
@@ -65,4 +63,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

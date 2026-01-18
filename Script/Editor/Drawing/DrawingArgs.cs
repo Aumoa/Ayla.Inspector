@@ -1,14 +1,12 @@
-#if UNITY_EDITOR
 #nullable enable
 
 using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using Ayla.Core;
 using UnityEditor;
 using UnityEngine;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public readonly struct DrawingArgs
     {
@@ -238,4 +236,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

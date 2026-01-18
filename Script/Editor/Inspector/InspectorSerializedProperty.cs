@@ -1,12 +1,10 @@
 ﻿#nullable enable
-#if UNITY_EDITOR
 
 using System;
-using Ayla.Core;
 using UnityEditor;
 using UnityEngine.Pool;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public class InspectorSerializedProperty : InspectorMember
     {
@@ -104,4 +102,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

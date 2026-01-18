@@ -1,11 +1,10 @@
 ﻿#nullable enable
 
 using System.Text.RegularExpressions;
-using Ayla.Core;
 using UnityEditor;
 using UnityEngine;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public class InspectorMonoScript : InspectorSerializedProperty
     {

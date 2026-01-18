@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 #nullable enable
 
 using System.Reflection;
@@ -8,7 +7,7 @@ using UnityEngine.Pool;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public static class UnityIconCollection
     {
@@ -72,4 +71,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

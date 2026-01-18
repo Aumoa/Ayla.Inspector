@@ -1,6 +1,5 @@
-#if UNITY_EDITOR
 #nullable enable
-namespace Ayla.Inspector
+namespace Ayla
 {
     public enum DragType
     {
@@ -16,4 +15,3 @@ namespace Ayla.Inspector
         ResizeLeftBottom
     }
 }
-#endif

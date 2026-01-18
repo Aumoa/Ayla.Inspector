@@ -1,11 +1,9 @@
 ﻿#nullable enable
-#if UNITY_EDITOR
 
 using System;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     [DebuggerDisplay("{ToString()}")]
     public abstract class InspectorMember : IDisposable
@@ -34,4 +32,3 @@ namespace Ayla.Inspector
         public abstract InspectorMember[] GetChildren(bool recurse);
     }
 }
-#endif

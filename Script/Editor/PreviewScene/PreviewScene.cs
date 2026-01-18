@@ -1,11 +1,10 @@
-﻿#if UNITY_EDITOR
-using System;
+﻿using System;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     [Serializable]
     public class PreviewScene
@@ -78,4 +77,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

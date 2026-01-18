@@ -1,11 +1,9 @@
-#if UNITY_EDITOR
 #nullable enable
 using System.Runtime.CompilerServices;
-using Ayla.Core;
 using UnityEditor;
 using UnityEngine;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public static class HorizontalBorder
     {
@@ -34,4 +32,3 @@ namespace Ayla.Inspector
         public static void Draw(DrawingArgs args) => Draw(args, Color.black * 0.5f);
     }
 }
-#endif

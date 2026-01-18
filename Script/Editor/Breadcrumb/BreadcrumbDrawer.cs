@@ -1,8 +1,7 @@
-#if UNITY_EDITOR
 #nullable enable
 using UnityEngine;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public static class BreadcrumbDrawer
     {
@@ -77,4 +76,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

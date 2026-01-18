@@ -1,9 +1,8 @@
-#if UNITY_EDITOR
 #nullable enable
 using System;
 using UnityEngine;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public static class Dragging
     {
@@ -111,4 +110,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

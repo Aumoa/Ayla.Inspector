@@ -1,8 +1,6 @@
-﻿// Copyright 2020-2025 AylaEngine. All Rights Reserved.
+﻿using UnityEditor;
 
-using UnityEditor;
-
-namespace Ayla.Inspector
+namespace Ayla
 {
     public class InspectorObjectHideFlags : InspectorSerializedProperty
     {

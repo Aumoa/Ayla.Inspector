@@ -1,10 +1,9 @@
 ﻿#nullable enable
-#if UNITY_EDITOR
 
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(Object), true)]
@@ -34,4 +33,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

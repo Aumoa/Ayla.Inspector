@@ -1,9 +1,8 @@
-﻿#if UNITY_EDITOR
-#nullable enable
+﻿#nullable enable
 
 using System;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class DefaultOrderAttribute : Attribute
@@ -16,4 +15,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

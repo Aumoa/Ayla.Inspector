@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine.Pool;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public class InspectorSerializedObject : InspectorMember
     {

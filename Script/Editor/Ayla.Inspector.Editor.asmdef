@@ -1,12 +1,13 @@
 {
-    "name": "Ayla.Inspector",
-    "rootNamespace": "Ayla.Inspector",
+    "name": "Ayla.Inspector.Editor",
+    "rootNamespace": "Ayla",
     "references": [
-        "Unity.RenderPipelines.Core.Runtime",
-        "Unity.RenderPipelines.Universal.Runtime",
-        "Ayla.Core"
+        "Ayla.Core",
+        "Ayla.Inspector"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,

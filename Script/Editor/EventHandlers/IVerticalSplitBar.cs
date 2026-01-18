@@ -1,6 +1,5 @@
-#if UNITY_EDITOR
 #nullable enable
-namespace Ayla.Inspector
+namespace Ayla
 {
     public interface IVerticalSplitBar
     {
@@ -11,4 +10,3 @@ namespace Ayla.Inspector
         void EndDrag();
     }
 }
-#endif

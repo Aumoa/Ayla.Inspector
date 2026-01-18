@@ -1,8 +1,9 @@
 ﻿#nullable enable
 
+using UnityEditor;
 using UnityEngine;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public static partial class EditorGUIHelper
     {
@@ -19,5 +20,14 @@ namespace Ayla.Inspector
 
         public static GUIContent TempContent(Texture? image)
             => TempContent(null, null, image);
+
+#if UNITY_EDITOR
+        public static GUIContent TempIconContent(string iconName, string? text = null, string? tooltip = null)
+        {
+            var iconContent = EditorGUIUtility.IconContent(iconName);
+            var content = TempContent(text, tooltip, iconContent.image);
+            return content;
+        }
+#endif
     }
 }

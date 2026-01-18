@@ -1,10 +1,9 @@
-#if UNITY_EDITOR
 #nullable enable
 
 using UnityEditor;
 using UnityEngine;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public partial class UnityIconExplorer
     {
@@ -70,4 +69,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

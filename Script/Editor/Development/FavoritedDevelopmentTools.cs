@@ -1,7 +1,6 @@
-﻿#if UNITY_EDITOR
-#nullable enable
+﻿#nullable enable
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     internal class FavoriteDevTool : DevelopmentTools
     {
@@ -40,4 +39,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

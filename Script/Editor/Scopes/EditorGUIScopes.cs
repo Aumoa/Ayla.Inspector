@@ -1,11 +1,10 @@
-﻿#if UNITY_EDITOR
-#nullable enable
+﻿#nullable enable
 
 using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public static class EditorGUIScopes
     {
@@ -59,4 +58,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

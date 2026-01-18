@@ -1,8 +1,7 @@
-#if UNITY_EDITOR
 #nullable enable
 using UnityEngine;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public interface IDragEventHandler
     {
@@ -13,4 +12,3 @@ namespace Ayla.Inspector
         void EndDrag();
     }
 }
-#endif

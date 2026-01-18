@@ -1,11 +1,10 @@
-#if UNITY_EDITOR
 #nullable enable
 
 using System;
 using System.Reflection;
 using UnityEditor;
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     public abstract class DevelopmentTools
     {
@@ -146,4 +145,3 @@ namespace Ayla.Inspector
         }
     }
 }
-#endif

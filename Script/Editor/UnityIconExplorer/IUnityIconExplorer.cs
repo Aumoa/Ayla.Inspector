@@ -1,7 +1,6 @@
-#if UNITY_EDITOR
 #nullable enable
 
-namespace Ayla.Inspector
+namespace Ayla
 {
     internal interface IUnityIconExplorer
     {
@@ -11,4 +10,3 @@ namespace Ayla.Inspector
         long Selected { get; set; }
     }
 }
-#endif

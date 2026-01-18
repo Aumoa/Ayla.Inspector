@@ -1,10 +1,8 @@
-#if UNITY_EDITOR
 #nullable enable
-namespace Ayla.Inspector
+namespace Ayla
 {
     public interface IRepaintHandler
     {
         void Repaint();
     }
 }
-#endif
