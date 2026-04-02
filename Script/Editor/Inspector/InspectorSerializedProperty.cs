@@ -1,104 +1,101 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using UnityEditor;
 using UnityEngine.Pool;
 
-namespace Ayla
+namespace Ayla;
+
+public class InspectorSerializedProperty : InspectorMember
 {
-    public class InspectorSerializedProperty : InspectorMember
+    private readonly SerializedProperty m_SerializedProperty;
+    private InspectorMember[]? m_Children;
+
+    public InspectorSerializedProperty(SerializedProperty serializedProperty)
     {
-        private readonly SerializedProperty m_SerializedProperty;
-        private InspectorMember[]? m_Children;
+        m_SerializedProperty = serializedProperty;
+    }
 
-        public InspectorSerializedProperty(SerializedProperty serializedProperty)
-        {
-            m_SerializedProperty = serializedProperty;
-        }
+    protected SerializedProperty Current => m_SerializedProperty;
 
-        protected SerializedProperty Current => m_SerializedProperty;
+    public override string ToString()
+    {
+        return m_SerializedProperty.name;
+    }
 
-        public override string ToString()
-        {
-            return m_SerializedProperty.name;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (m_Children != null)
-                {
-                    foreach (var child in m_Children)
-                    {
-                        child.Dispose();
-                    }
-                }
-
-                m_Children = null;
-            }
-
-            base.Dispose(disposing);
-        }
-
-        public override bool IsReadOnly => m_SerializedProperty.editable;
-
-        public override void OnInspectorGUI()
-        {
-            using (GUIScope.Disabled(IsReadOnly == false))
-            {
-                EditorGUILayout.PropertyField(m_SerializedProperty, false);
-
-                if (m_SerializedProperty.isExpanded)
-                {
-                    using var scope1 = EditorGUIScopes.Indent();
-                    foreach (var child in GetChildren(false))
-                    {
-                        child.OnInspectorGUI();
-                    }
-                }
-            }
-        }
-
-        public override void OnApplyModifiedProperties()
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
         {
             if (m_Children != null)
             {
                 foreach (var child in m_Children)
                 {
-                    child.OnApplyModifiedProperties();
+                    child.Dispose();
                 }
             }
+
+            m_Children = null;
         }
 
-        public override InspectorMember[] GetChildren(bool recurse)
+        base.Dispose(disposing);
+    }
+
+    public override bool IsReadOnly => m_SerializedProperty.editable;
+
+    public override void OnInspectorGUI()
+    {
+        using (GUIScope.Disabled(IsReadOnly == false))
         {
-            if (m_Children == null)
+            EditorGUILayout.PropertyField(m_SerializedProperty, false);
+
+            if (m_SerializedProperty.isExpanded)
             {
-                var iterator = m_SerializedProperty.Copy();
-                int initial = iterator.depth;
-                iterator.Next(true);
-                if (initial == iterator.depth)
+                using var scope1 = EditorGUIScope.Indent();
+                foreach (var child in GetChildren(false))
                 {
-                    m_Children = Array.Empty<InspectorMember>();
-                    return m_Children;
+                    child.OnInspectorGUI();
                 }
+            }
+        }
+    }
 
-                int depth = iterator.depth;
-                using var scope1 = ListPool<InspectorMember>.Get(out var children);
-                while (depth == iterator.depth)
-                {
-                    children.Add(new InspectorSerializedProperty(iterator.Copy()));
-                    if (iterator.NextVisible(false) == false)
-                    {
-                        break;
-                    }
-                }
+    public override void OnApplyModifiedProperties()
+    {
+        if (m_Children != null)
+        {
+            foreach (var child in m_Children)
+            {
+                child.OnApplyModifiedProperties();
+            }
+        }
+    }
 
-                m_Children = children.ToArray();
+    public override InspectorMember[] GetChildren(bool recurse)
+    {
+        if (m_Children == null)
+        {
+            var iterator = m_SerializedProperty.Copy();
+            int initial = iterator.depth;
+            iterator.Next(true);
+            if (initial == iterator.depth)
+            {
+                m_Children = Array.Empty<InspectorMember>();
+                return m_Children;
             }
 
-            return m_Children;
+            int depth = iterator.depth;
+            using var scope1 = ListPool<InspectorMember>.Get(out var children);
+            while (depth == iterator.depth)
+            {
+                children.Add(new InspectorSerializedProperty(iterator.Copy()));
+                if (iterator.NextVisible(false) == false)
+                {
+                    break;
+                }
+            }
+
+            m_Children = children.ToArray();
         }
+
+        return m_Children;
     }
 }

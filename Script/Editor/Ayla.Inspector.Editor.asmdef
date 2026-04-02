@@ -3,8 +3,7 @@
     "rootNamespace": "Ayla",
     "references": [
         "Ayla.Core",
-        "Ayla.Core.Editor",
-        "Ayla.Inspector"
+        "Ayla.Core.Editor"
     ],
     "includePlatforms": [
         "Editor"
