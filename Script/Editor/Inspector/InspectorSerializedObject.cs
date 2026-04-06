@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEditor;
 using UnityEngine.Pool;
+using Object = UnityEngine.Object;
 
 namespace Ayla;
 
@@ -65,6 +66,8 @@ public class InspectorSerializedObject : InspectorMember
         {
             var iterator = m_SerializedObject.GetIterator();
             int initial = iterator.depth;
+            Type? targetType = GetSingleType(m_SerializedObject.targetObjects);
+
             iterator.Next(true);
             if (initial == iterator.depth)
             {
@@ -72,32 +75,39 @@ public class InspectorSerializedObject : InspectorMember
                 return m_Children;
             }
 
-            int depth = iterator.depth;
             using var scope1 = ListPool<InspectorMember>.Get(out var children);
-            while (depth == iterator.depth)
+            InspectorUtility.GatherSerializedProperties(iterator, children);
+            if (targetType != null)
             {
-                if (InspectorMonoScript.IsThat(iterator))
-                {
-                    children.Add(new InspectorMonoScript(iterator.Copy()));
-                }
-                else if (InspectorObjectHideFlags.IsThat(iterator))
-                {
-                    children.Add(new InspectorObjectHideFlags(iterator.Copy()));
-                }
-                else
-                {
-                    children.Add(new InspectorSerializedProperty(iterator.Copy()));
-                }
-
-                if (iterator.NextVisible(false) == false)
-                {
-                    break;
-                }
+                InspectorUtility.GatherSpecialProperties(m_SerializedObject.targetObjects, targetType, children);
             }
-
             m_Children = children.ToArray();
         }
 
         return m_Children;
+
+        static Type? GetSingleType(Object[] objects)
+        {
+            if (objects.Length == 0)
+            {
+                return null;
+            }
+
+            if (objects[0] == null)
+            {
+                return null;
+            }
+
+            var type = objects[0].GetType();
+            for (int i = 1; i < objects.Length; ++i)
+            {
+                if (objects[i].GetType() != type)
+                {
+                    return null;
+                }
+            }
+
+            return type;
+        }
     }
 }

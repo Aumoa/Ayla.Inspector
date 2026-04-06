@@ -39,11 +39,11 @@ public class InspectorSerializedProperty : InspectorMember
         base.Dispose(disposing);
     }
 
-    public override bool IsReadOnly => m_SerializedProperty.editable;
+    public override bool IsReadOnly => !m_SerializedProperty.editable;
 
     public override void OnInspectorGUI()
     {
-        using (GUIScope.Disabled(IsReadOnly == false))
+        using (GUIScope.Disabled(IsReadOnly))
         {
             EditorGUILayout.PropertyField(m_SerializedProperty, false);
 
