@@ -35,17 +35,25 @@ namespace Ayla
         {
             using (GUIScope.Disabled(IsReadOnly))
             {
-                if (GUILayout.Button(m_Name))
+                var rect = new Rect(0, 0, 9999, 9999);
+                rect = EditorGUI.IndentedRect(rect);
+
+                using (GUIScope.Horizontal())
                 {
-                    foreach (var caller in m_Callers)
+                    GUILayout.Space(rect.x - EditorGUIUtility.standardVerticalSpacing);
+
+                    if (GUILayout.Button(m_Name))
                     {
-                        try
+                        foreach (var caller in m_Callers)
                         {
-                            m_MethodInfo.Invoke(caller, null);
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.LogException(e);
+                            try
+                            {
+                                m_MethodInfo.Invoke(caller, null);
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.LogException(e);
+                            }
                         }
                     }
                 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine.Pool;
+using Object = UnityEngine.Object;
 
 namespace Ayla
 {
@@ -70,6 +71,50 @@ namespace Ayla
                 specialMembers = output.ToArray();
                 s_SpecialMembers.Add(type, specialMembers);
                 return specialMembers;
+            }
+        }
+
+        public static void GatherInspectorMembers<T>(SerializedProperty iterator, T[] boxedValue, List<InspectorMember> output) where T : class
+        {
+            int initial = iterator.depth;
+            Type? targetType = GetSingleType(boxedValue);
+
+            iterator.Next(true);
+            if (initial == iterator.depth)
+            {
+                return;
+            }
+
+            GatherSerializedProperties(iterator, output);
+            if (targetType != null)
+            {
+                GatherSpecialProperties(boxedValue, targetType, output);
+            }
+
+            return;
+
+            static Type? GetSingleType(T[] objects)
+            {
+                if (objects.Length == 0)
+                {
+                    return null;
+                }
+
+                if (objects[0] == null)
+                {
+                    return null;
+                }
+
+                var type = objects[0].GetType();
+                for (int i = 1; i < objects.Length; ++i)
+                {
+                    if (objects[i].GetType() != type)
+                    {
+                        return null;
+                    }
+                }
+
+                return type;
             }
         }
 

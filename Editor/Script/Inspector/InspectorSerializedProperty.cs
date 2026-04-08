@@ -1,7 +1,8 @@
 ﻿#nullable enable
 
-using System;
 using UnityEditor;
+using UnityEditorInternal;
+using UnityEngine;
 using UnityEngine.Pool;
 
 namespace Ayla
@@ -10,6 +11,7 @@ namespace Ayla
     {
         private readonly SerializedProperty m_SerializedProperty;
         private InspectorMember[]? m_Children;
+        private ReorderableList? m_ReorderableList;
 
         public InspectorSerializedProperty(SerializedProperty serializedProperty)
         {
@@ -43,18 +45,74 @@ namespace Ayla
 
         public override bool IsReadOnly => !m_SerializedProperty.editable;
 
+        private static GUILayoutOption? s_ArraySizeWidthCache;
+
         public override void OnInspectorGUI()
         {
             using (GUIScope.Disabled(IsReadOnly))
             {
-                EditorGUILayout.PropertyField(m_SerializedProperty, false);
-
-                if (m_SerializedProperty.isExpanded)
+                bool isArray = m_SerializedProperty.isArray && m_SerializedProperty.propertyType != SerializedPropertyType.String;
+                if (isArray)
                 {
-                    using var scope1 = EditorGUIScope.Indent();
-                    foreach (var child in GetChildren(false))
+                    using (EditorGUIScope.Horizontal())
                     {
-                        child.OnInspectorGUI();
+                        m_SerializedProperty.isExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(m_SerializedProperty.isExpanded, m_SerializedProperty.displayName);
+                        var arraySize = m_SerializedProperty.arraySize;
+                        using (GUIScope.Changed())
+                        {
+                            s_ArraySizeWidthCache ??= GUILayout.Width(50);
+                            arraySize = EditorGUILayout.IntField(arraySize, s_ArraySizeWidthCache);
+                            if (GUI.changed)
+                            {
+                                m_SerializedProperty.arraySize = arraySize;
+                            }
+                        }
+                    }
+
+                    GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
+
+                    try
+                    {
+                        if (m_ReorderableList == null)
+                        {
+                            m_ReorderableList = new ReorderableList(m_SerializedProperty.serializedObject, m_SerializedProperty, true, false, true, true)
+                            {
+                                elementHeightCallback = index =>
+                                {
+                                    using (EditorGUIScope.Indent())
+                                    {
+                                        var property = m_SerializedProperty.GetArrayElementAtIndex(index);
+                                        return EditorGUI.GetPropertyHeight(property, true);
+                                    }
+                                },
+                                drawElementCallback = (rect, index, _, _) =>
+                                {
+                                    using (EditorGUIScope.Indent())
+                                    using (EditorGUIScope.IndentLabelWidth())
+                                    {
+                                        var property = m_SerializedProperty.GetArrayElementAtIndex(index);
+                                        EditorGUI.PropertyField(rect, property, true);
+                                    }
+                                }
+                            };
+                        }
+                        m_ReorderableList.DoLayoutList();
+                    }
+                    finally
+                    {
+                        EditorGUILayout.EndFoldoutHeaderGroup();
+                    }
+                }
+                else
+                {
+                    EditorGUILayout.PropertyField(m_SerializedProperty, false);
+                    if (m_SerializedProperty.isExpanded)
+                    {
+                        using var scope1 = EditorGUIScope.Indent();
+                        foreach (var child in GetChildren(false))
+                        {
+                            child.OnInspectorGUI();
+                        }
                     }
                 }
             }
@@ -76,25 +134,8 @@ namespace Ayla
             if (m_Children == null)
             {
                 var iterator = m_SerializedProperty.Copy();
-                int initial = iterator.depth;
-                iterator.Next(true);
-                if (initial == iterator.depth)
-                {
-                    m_Children = Array.Empty<InspectorMember>();
-                    return m_Children;
-                }
-
-                int depth = iterator.depth;
                 using var scope1 = ListPool<InspectorMember>.Get(out var children);
-                while (depth == iterator.depth)
-                {
-                    children.Add(new InspectorSerializedProperty(iterator.Copy()));
-                    if (iterator.NextVisible(false) == false)
-                    {
-                        break;
-                    }
-                }
-
+                InspectorUtility.GatherInspectorMembers(iterator, new object[] { iterator.boxedValue }, children);
                 m_Children = children.ToArray();
             }
 

@@ -1,12 +1,11 @@
 ﻿#nullable enable
 
 using UnityEditor;
-using Object = UnityEngine.Object;
 
 namespace Ayla
 {
     [CanEditMultipleObjects]
-    [CustomEditor(typeof(Object), true)]
+    [CustomEditor(typeof(object), true)]
     public class Inspector : Editor
     {
         private InspectorSerializedObject m_TargetObject = null!;
@@ -14,10 +13,12 @@ namespace Ayla
         private void OnEnable()
         {
             m_TargetObject = new InspectorSerializedObject(serializedObject);
+            Undo.undoRedoPerformed += OnUndoRedoPerformed;
         }
 
         private void OnDisable()
         {
+            Undo.undoRedoPerformed -= OnUndoRedoPerformed;
             m_TargetObject?.Dispose();
             m_TargetObject = null!;
         }
@@ -29,6 +30,15 @@ namespace Ayla
             if (serializedObject.ApplyModifiedProperties())
             {
                 m_TargetObject.OnApplyModifiedProperties();
+            }
+        }
+
+        private void OnUndoRedoPerformed()
+        {
+            if (m_TargetObject != null)
+            {
+                m_TargetObject.OnApplyModifiedProperties();
+                Repaint();
             }
         }
     }
