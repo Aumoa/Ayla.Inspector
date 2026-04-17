@@ -12,6 +12,11 @@ namespace Ayla
 
         private void OnEnable()
         {
+            if (target == null)
+            {
+                return;
+            }
+
             m_TargetObject = new InspectorSerializedObject(serializedObject);
             Undo.undoRedoPerformed += OnUndoRedoPerformed;
         }
