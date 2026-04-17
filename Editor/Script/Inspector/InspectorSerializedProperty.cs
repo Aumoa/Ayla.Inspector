@@ -69,38 +69,41 @@ namespace Ayla
                         }
                     }
 
-                    GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
+                    if (m_SerializedProperty.isExpanded)
+                    {
+                        GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
 
-                    try
-                    {
-                        if (m_ReorderableList == null)
+                        try
                         {
-                            m_ReorderableList = new ReorderableList(m_SerializedProperty.serializedObject, m_SerializedProperty, true, false, true, true)
+                            if (m_ReorderableList == null)
                             {
-                                elementHeightCallback = index =>
+                                m_ReorderableList = new ReorderableList(m_SerializedProperty.serializedObject, m_SerializedProperty, true, false, true, true)
                                 {
-                                    using (EditorGUIScope.Indent())
+                                    elementHeightCallback = index =>
                                     {
-                                        var property = m_SerializedProperty.GetArrayElementAtIndex(index);
-                                        return EditorGUI.GetPropertyHeight(property, true);
-                                    }
-                                },
-                                drawElementCallback = (rect, index, _, _) =>
-                                {
-                                    using (EditorGUIScope.Indent())
-                                    using (EditorGUIScope.IndentLabelWidth())
+                                        using (EditorGUIScope.Indent())
+                                        {
+                                            var property = m_SerializedProperty.GetArrayElementAtIndex(index);
+                                            return EditorGUI.GetPropertyHeight(property, true);
+                                        }
+                                    },
+                                    drawElementCallback = (rect, index, _, _) =>
                                     {
-                                        var property = m_SerializedProperty.GetArrayElementAtIndex(index);
-                                        EditorGUI.PropertyField(rect, property, true);
+                                        using (EditorGUIScope.Indent())
+                                        using (EditorGUIScope.IndentLabelWidth())
+                                        {
+                                            var property = m_SerializedProperty.GetArrayElementAtIndex(index);
+                                            EditorGUI.PropertyField(rect, property, true);
+                                        }
                                     }
-                                }
-                            };
+                                };
+                            }
+                            m_ReorderableList.DoLayoutList();
                         }
-                        m_ReorderableList.DoLayoutList();
-                    }
-                    finally
-                    {
-                        EditorGUILayout.EndFoldoutHeaderGroup();
+                        finally
+                        {
+                            EditorGUILayout.EndFoldoutHeaderGroup();
+                        }
                     }
                 }
                 else
