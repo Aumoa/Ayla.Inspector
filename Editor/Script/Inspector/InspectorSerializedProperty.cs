@@ -54,27 +54,29 @@ namespace Ayla
                 bool isArray = m_SerializedProperty.isArray && m_SerializedProperty.propertyType != SerializedPropertyType.String;
                 if (isArray)
                 {
-                    using (EditorGUIScope.Horizontal())
+                    bool beganFoldoutHeaderGroup = false;
+                    try
                     {
-                        m_SerializedProperty.isExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(m_SerializedProperty.isExpanded, m_SerializedProperty.displayName);
-                        var arraySize = m_SerializedProperty.arraySize;
-                        using (GUIScope.Changed())
+                        using (EditorGUIScope.Horizontal())
                         {
-                            s_ArraySizeWidthCache ??= GUILayout.Width(50);
-                            arraySize = EditorGUILayout.IntField(arraySize, s_ArraySizeWidthCache);
-                            if (GUI.changed)
+                            m_SerializedProperty.isExpanded = EditorGUILayout.BeginFoldoutHeaderGroup(m_SerializedProperty.isExpanded, m_SerializedProperty.displayName);
+                            beganFoldoutHeaderGroup = true;
+                            var arraySize = m_SerializedProperty.arraySize;
+                            using (GUIScope.Changed())
                             {
-                                m_SerializedProperty.arraySize = arraySize;
+                                s_ArraySizeWidthCache ??= GUILayout.Width(50);
+                                arraySize = EditorGUILayout.IntField(arraySize, s_ArraySizeWidthCache);
+                                if (GUI.changed)
+                                {
+                                    m_SerializedProperty.arraySize = arraySize;
+                                }
                             }
                         }
-                    }
 
-                    if (m_SerializedProperty.isExpanded)
-                    {
-                        GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
-
-                        try
+                        if (m_SerializedProperty.isExpanded)
                         {
+                            GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
+
                             if (m_ReorderableList == null)
                             {
                                 m_ReorderableList = new ReorderableList(m_SerializedProperty.serializedObject, m_SerializedProperty, true, false, true, true)
@@ -100,7 +102,10 @@ namespace Ayla
                             }
                             m_ReorderableList.DoLayoutList();
                         }
-                        finally
+                    }
+                    finally
+                    {
+                        if (beganFoldoutHeaderGroup)
                         {
                             EditorGUILayout.EndFoldoutHeaderGroup();
                         }
