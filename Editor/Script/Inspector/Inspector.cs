@@ -8,7 +8,11 @@ namespace Ayla
     [CustomEditor(typeof(object), true)]
     public class Inspector : Editor
     {
-        private InspectorSerializedObject m_TargetObject = null!;
+        private const string MissingScriptMessage =
+            "This object cannot be inspected because its script is missing or failed to load. " +
+            "Restore the script or remove the broken object reference.";
+
+        private InspectorSerializedObject? m_TargetObject;
 
         private void OnEnable()
         {
@@ -25,11 +29,17 @@ namespace Ayla
         {
             Undo.undoRedoPerformed -= OnUndoRedoPerformed;
             m_TargetObject?.Dispose();
-            m_TargetObject = null!;
+            m_TargetObject = null;
         }
 
         public override void OnInspectorGUI()
         {
+            if (m_TargetObject == null)
+            {
+                EditorGUILayout.HelpBox(MissingScriptMessage, MessageType.Error);
+                return;
+            }
+
             serializedObject.Update();
             m_TargetObject.OnInspectorGUI();
             if (serializedObject.ApplyModifiedProperties())
